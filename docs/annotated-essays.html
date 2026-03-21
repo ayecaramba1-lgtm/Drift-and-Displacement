@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Narrative Fingerprint — Annotated Essays</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Georgia, serif;
+    font-size: 15px;
+    line-height: 1.85;
+    color: #1a1a1a;
+    background: #faf9f7;
+    padding: 0;
+  }
+
+  .cover {
+    background: #1a1a1a;
+    color: #faf9f7;
+    padding: 80px 60px;
+    text-align: center;
+  }
+
+  .cover .brand {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: .2em;
+    color: #C49A2A;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .cover h1 {
+    font-size: 38px;
+    font-weight: normal;
+    margin-bottom: 12px;
+    letter-spacing: -.5px;
+  }
+
+  .cover .sub {
+    font-size: 18px;
+    font-style: italic;
+    color: #aaa;
+    margin-bottom: 40px;
+  }
+
+  .cover .premise {
+    font-size: 14px;
+    color: #888;
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .legend-page {
+    padding: 60px;
+    max-width: 860px;
+    margin: 0 auto;
+    border-bottom: 1px solid #e0ded8;
+  }
+
+  .legend-page h2 {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 28px;
+  }
+
+  .legend-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: #f5f4f0;
+  }
+
+  .legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .legend-content .legend-name {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 2px;
+  }
+
+  .legend-content .legend-desc {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  .legend-divider {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin: 24px 0 16px;
+  }
+
+  .essay-section {
+    padding: 60px 60px 80px;
+    max-width: 860px;
+    margin: 0 auto;
+    border-bottom: 1px solid #e0ded8;
+  }
+
+  .essay-meta {
+    margin-bottom: 32px;
+  }
+
+  .essay-tag {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 6px;
+  }
+
+  .essay-title {
+    font-size: 26px;
+    font-weight: normal;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+  }
+
+  .essay-register {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #999;
+    font-style: italic;
+  }
+
+  .essay-body {
+    margin-bottom: 40px;
+  }
+
+  .essay-body p {
+    margin-bottom: 1em;
+  }
+
+  .essay-body .stanza {
+    margin-bottom: 1.2em;
+    padding-left: 0;
+  }
+
+  .essay-body .line {
+    display: block;
+    line-height: 1.7;
+  }
+
+  /* Highlight styles */
+  .h-entry    { background: rgba(196,154,42,0.22);  border-bottom: 2px solid #C49A2A; padding: 1px 2px; border-radius: 2px; }
+  .h-trans    { background: rgba(127,119,221,0.2);  border-bottom: 2px solid #7F77DD; padding: 1px 2px; border-radius: 2px; }
+  .h-comp     { background: rgba(29,158,117,0.2);   border-bottom: 2px solid #1D9E75; padding: 1px 2px; border-radius: 2px; }
+  .h-return   { background: rgba(216,90,48,0.2);    border-bottom: 2px solid #D85A30; padding: 1px 2px; border-radius: 2px; }
+  .h-res      { background: rgba(212,83,126,0.2);   border-bottom: 2px solid #D4537E; padding: 1px 2px; border-radius: 2px; }
+  .h-cross    { background: rgba(55,138,221,0.18);  border-bottom: 2px solid #378ADD; padding: 1px 2px; border-radius: 2px; }
+
+  /* DNA highlight styles (same colors, slightly different opacity) */
+  .d-core     { background: rgba(196,154,42,0.18);  border-bottom: 2px solid #C49A2A; padding: 1px 2px; border-radius: 2px; }
+  .d-lex      { background: rgba(127,119,221,0.18); border-bottom: 2px solid #7F77DD; padding: 1px 2px; border-radius: 2px; }
+  .d-comp     { background: rgba(29,158,117,0.18);  border-bottom: 2px solid #1D9E75; padding: 1px 2px; border-radius: 2px; }
+  .d-meta     { background: rgba(216,90,48,0.18);   border-bottom: 2px solid #D85A30; padding: 1px 2px; border-radius: 2px; }
+  .d-syn      { background: rgba(212,83,126,0.18);  border-bottom: 2px solid #D4537E; padding: 1px 2px; border-radius: 2px; }
+  .d-emo      { background: rgba(55,138,221,0.15);  border-bottom: 2px solid #378ADD; padding: 1px 2px; border-radius: 2px; }
+
+  .callout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 36px;
+  }
+
+  .callout {
+    border-left: 3px solid #ddd;
+    padding: 10px 14px;
+    background: #f5f4f0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .callout-label {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .callout-text {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.55;
+  }
+
+  .summary-page {
+    padding: 60px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .summary-page h2 {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 28px;
+  }
+
+  .invariance-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 40px;
+  }
+
+  .invariance-table th {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #aaa;
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .invariance-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .invariance-table td:first-child {
+    font-weight: 600;
+    color: #1a1a1a;
+    white-space: nowrap;
+    width: 180px;
+  }
+
+  .fingerprint-final {
+    background: #1a1a1a;
+    color: #faf9f7;
+    padding: 40px 48px;
+    border-radius: 10px;
+    margin-top: 40px;
+  }
+
+  .fingerprint-final .fp-label {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: #C49A2A;
+    margin-bottom: 16px;
+  }
+
+  .fingerprint-final .fp-statement {
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.7;
+    color: #f5f4f0;
+  }
+
+  .page-break {
+    height: 1px;
+    background: #e0ded8;
+    margin: 0;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="brand">Nectar &amp; Quill &nbsp;|&nbsp; Drift &amp; Displacement</div>
+  <h1>The Narrative Fingerprint</h1>
+  <div class="sub">Annotated Proof of Concept — Live Diagnostic Session</div>
+  <div class="premise">
+    Five essays. Five registers. One fingerprint.<br>
+    Each passage is highlighted with the color of the movement signature or DNA strand it demonstrates — showing the voice at work beneath the surface of the writing.
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend-page">
+  <h2>Color Key</h2>
+
+  <div class="legend-divider">Six Movement Signatures</div>
+  <div class="legend-grid">
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#C49A2A;"></div>
+      <div class="legend-content">
+        <div class="legend-name">Entry Pattern</div>
+        <div class="legend-desc">Concrete, embodied entry — the abstract arrives second</div>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#7F77DD;"></div>
+      <div class="legend-content">
+        <div class="legend-name">Transition Logic</div>
+        <div class="legend-desc">Non-linear, associative — leaps from specific to cosmic</div>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#1D9E75;"></div>
+      <div class="legend-content">
+        <div class="legend-name">Compression Behavior</div>
+        <div class="legend-desc">Long swell compressed into single-line detonation</div>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#D85A30;"></div>
+      <div class="legend-content">
+        <div class="legend-name">Return Motifs</div>
+        <div class="legend-desc">Thresholds, orbits, belonging vs. proximity</div>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#D4537E;"></div>
+      <div class="legend-content">
+        <div class="legend-name">Resolution Style</div>
+        <div class="legend-desc">Wry gravity — open, never collapsed</div>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#378ADD;"></div>
+      <div class="legend-content">
+        <div class="legend-name">Cross-Context Invariants</div>
+        <div class="legend-desc">Mythic-mundane collision across all registers</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend-divider">DNA Strands — What the Voice Is Made Of</div>
+  <div class="legend-grid">
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#C49A2A;"></div>
+      <div class="legend-content">
+        <div class="legend-name">Core Duality / Friction</div>
+        <div class="legend-desc">The mythic-mundane engine — opposing forces in collision</div>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#7F77DD;"></div>
+      <div class="legend-content">
+        <div class="legend-name">Lexical DNA</div>
+        <div class="legend-desc">Archaic, frontier, or elevated language colliding with the specific and colloquial</div>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#1D9E75;"></div>
+      <div class="legend-content">
+        <div class="legend-name">Compression / Prosodic Rhythm</div>
+        <div class="legend-desc">Wave and snap — long swell followed by short detonation</div>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#D85A30;"></div>
+      <div class="legend-content">
+        <div class="legend-name">Metaphoric Framework</div>
+        <div class="legend-desc">Extended metaphor carrying structural load across the piece</div>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#D4537E;"></div>
+      <div class="legend-content">
+        <div class="legend-name">Syntactic Architecture</div>
+        <div class="legend-desc">Quick-draw fragments + rolling compounds — the skeleton</div>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#378ADD;"></div>
+      <div class="legend-content">
+        <div class="legend-name">Emotional Resolution Pattern</div>
+        <div class="legend-desc">Wry gravity — the consistent emotional terminal</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ESSAY 1: TARGET CHRONICLES -->
+<div class="essay-section">
+  <div class="essay-meta">
+    <div class="essay-tag">Essay 01 &nbsp;/&nbsp; Comic Narrative</div>
+    <div class="essay-title">The Target Chronicles — The Spaghetti Western Lotion Aisle Showdown</div>
+    <div class="essay-register">Register: Comic, vernacular, mythic-colloquial</div>
+  </div>
+
+  <div class="essay-body">
+    <p><span class="h-entry d-core">There she was — a one-spur-wearing, saddlebag-hauling drifter who'd been riding into the Colleyville Target frontier a little too long.</span> <span class="d-lex">Heat waves rippled off the parking lot at high noon. Which, in this case, was 2 p.m., because nobody starts errands before the coffee's kicked in.</span></p>
+
+    <p><span class="d-lex">A loose plastic bag skittered across the asphalt like low-budget tumbleweed. One spur had been missing since an unfortunate clearance-rack incident in 19'. The other jingled faintly, like a tambourine having a hissy-fit.</span></p>
+
+    <p><span class="d-meta">Her poncho was a threadbare Target throw blanket/scarf thingy, combo. Now repurposed to conceal old car-seat stains.</span> <span class="h-trans">Her hat brim sat low and functioned as a layer of emotional protection.</span></p>
+
+    <p><span class="h-return d-meta">Her cart squeaked through the automatic doors like a harmonica with emphysema.</span></p>
+
+    <p>She had one objective: <span class="d-core">to locate that mythical cellulite lotion she had seen all over Instagram — the one promising to smooth dimples, firm thighs, and a possible revision of history.</span></p>
+
+    <p><span class="d-lex">Inside, the fluorescent lights hummed with institutional indifference.</span> She was met with the familiar, the beep of registers, a child demanding a fruit snack, and the distant collapse of someone else's afternoon.</p>
+
+    <p><span class="h-trans d-core">Before her lay row after row of fluorescent ambition, collagen lies, and packaging with the urgency of a Wild West wanted poster.</span></p>
+
+    <p>Then she saw it. The beauty aisle. <span class="h-return d-meta">The last thin place where delusion and commerce still shook hands.</span></p>
+
+    <p><span class="d-lex">And there, glowing under the cold retail sun, sat one lone bottle: 'Dimple Buster 3000' — Wrangles Them Saddlebags Back Into Shape — Guaranteed to Tighten Yer Hide — or Your Money Back (Subject to terms, conditions, and the occasional bout of regret.)</span></p>
+
+    <p>The label featured a cowgirl whose thighs had clearly never once brushed together in denim.</p>
+
+    <p>She reached. But from the far end of the aisle came another figure. Weather-beaten. Sharp-eyed. <span class="d-syn">Cart piled high like she was provisioning for either a neighborhood barbecue or a cow town constitutional crisis.</span></p>
+
+    <p>It was Calamity Kate. <span class="d-syn">She drug one foot like she'd survived previous lotion disputes and had the receipts to prove it.</span></p>
+
+    <p><span class="h-comp d-comp">"Been eyein' that since Markdown Monday, pilgrim."</span></p>
+
+    <p>There was no need for further dialogue. <span class="h-trans d-core">This was no longer about lotion. This was about principle. This was about scarcity. This was about two women of a certain age standing in a retail pharmacy trying to out-negotiate gravity for under twenty dollars.</span></p>
+
+    <p>The air between them thickened with tension and the scent of cucumber-melon body wash. Somewhere in the distance, a scanner beeped.</p>
+
+    <p>Then — <span class="d-syn">the lunge. Not elegant. Not athletic. But deeply committed.</span></p>
+
+    <p>Elbows moved. Carts bumped. A display of travel-size exfoliants absorbed the collateral damage.</p>
+
+    <p>And somehow — through grit, timing, and the kind of reflexes forged in the school pickup line — she got there first.</p>
+
+    <p><span class="h-comp d-comp">The Calamity Kate staggered backward into the deodorant display, clutching one of the fallen to her chest. "It had caffeine," she rasped. "For the bounce."</span></p>
+
+    <p>Then she slid slowly to the floor, defeated but moisturized.</p>
+
+    <p>Our heroine took the full-size bottle and limped toward checkout with the calm dignity of a woman who understood that victory is relative.</p>
+
+    <p>At the register, the cashier — <span class="d-lex">part clerk, part saloon keeper</span> — looked up and asked the customary question. "Find everything okay?"</p>
+
+    <p><span class="h-comp d-comp">"I found a product making promises it cannot legally keep." The cashier nodded. "So yes."</span></p>
+
+    <p>"That'll be $18.47 Ma'am, rewards number?" She entered it from muscle memory. Still side-eyeing her surroundings.</p>
+
+    <p><span class="d-meta">Outside, the parking lot glowed in that late-afternoon Texas light that makes everything look briefly cinematic and fundamentally overexposed.</span></p>
+
+    <p>She stood by the trunk and opened the bottle right there in the heat, <span class="h-return d-meta">applying the lotion to her thighs like moonshine to a wound.</span></p>
+
+    <p><span class="d-syn">It promised results visible in two weeks and felt emotionally necessary immediately.</span></p>
+
+    <p><span class="h-trans">Did it work? Of course not. Was the real prize smoother thighs? No. It was the brief, irrational hope that this tiny bottle could out-negotiate gravity.</span></p>
+
+    <p>She pushed the cart into the corral with the solemnity of someone concluding official business. Then she muttered to the wind:</p>
+
+    <p><span class="h-res d-emo">"Ain't no sunset pretty enough to fix what the years broke."</span></p>
+    <p><span class="h-res d-emo">"But damn if that lotion don't try — 'til next time, stranger."</span></p>
+
+    <p><span class="d-emo">And she hobbled off into dusk, lotion tucked beneath her arm like a hard-won golden nugget of chemically enhanced hope.</span></p>
+  </div>
+
+  <div class="callout-grid">
+    <div class="callout" style="border-left-color:#C49A2A;">
+      <div class="callout-label" style="color:#C49A2A;">Entry Pattern + Core Duality</div>
+      <div class="callout-text">Opens with the concrete and embodied — a specific person, a specific mission. The mythic-mundane engine ignites immediately: Target frontier, 2 p.m. high noon.</div>
+    </div>
+    <div class="callout" style="border-left-color:#1D9E75;">
+      <div class="callout-label" style="color:#1D9E75;">Compression Behavior</div>
+      <div class="callout-text">"Not elegant. Not athletic. But deeply committed." Three short lines detonate the buildup. "It had caffeine. For the bounce." The compression carries the entire comic grief.</div>
+    </div>
+    <div class="callout" style="border-left-color:#D85A30;">
+      <div class="callout-label" style="color:#D85A30;">Return Motifs + Metaphoric Framework</div>
+      <div class="callout-text">"The last thin place where delusion and commerce still shook hands." Thin place — a threshold, a liminal zone. The return motif of borders and in-between spaces appears immediately.</div>
+    </div>
+    <div class="callout" style="border-left-color:#D4537E;">
+      <div class="callout-label" style="color:#D4537E;">Resolution Style — Wry Gravity</div>
+      <div class="callout-text">"Ain't no sunset pretty enough to fix what the years broke. But damn if that lotion don't try." Neither despair nor false hope. The tension is held, never collapsed.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ESSAY 2: DOLL THREE -->
+<div class="essay-section">
+  <div class="essay-meta">
+    <div class="essay-tag">Essay 02 &nbsp;/&nbsp; Lyric Memoir</div>
+    <div class="essay-title">Doll Three — The Fifth Form of Loss</div>
+    <div class="essay-register">Register: Lyric, fragmented, elegiac</div>
+  </div>
+
+  <div class="essay-body">
+    <p><span class="h-entry d-core">There is a fifth form of loss.</span><br>
+    <span class="d-lex">I carry it everywhere I go,<br>like a locket.</span></p>
+
+    <p>I shower in it.<br>
+    Swim in it.<br>
+    <span class="h-comp d-comp">Walk through metal detectors with it pressed to my chest.</span></p>
+
+    <p><span class="h-trans">It has lived against the body so long<br>I sometimes forget it's even there.</span></p>
+
+    <p>It does not fit neatly inside the others,<br>
+    though it shares their architecture.</p>
+
+    <p><span class="d-core">This is the loss of loving someone<br>who was never fully yours.</span></p>
+
+    <p><span class="d-syn">Not because they left.<br>
+    Not because they died.<br>
+    But because from the very beginning,<br>
+    you lived in the margins of a story already written —</span><br>
+    <span class="h-return d-meta">a family etched in stone before you arrived,<br>
+    a bond forged in blood and divorce and devotion<br>
+    that had no room for you at its center.</span></p>
+
+    <p><span class="h-entry d-core">I stood in doorways for years.</span></p>
+
+    <p><span class="h-return d-meta">At the kitchen threshold<br>
+    while Brian and Landen laughed on the couch,<br>
+    their voices a duet I couldn't join.</span></p>
+
+    <p>In the delivery room when Finley was born —<br>
+    <span class="h-trans d-core">finally an origin,<br>
+    finally a mother,<br>
+    finally an entry point.</span></p>
+
+    <p>Brian's hand on my shoulder.<br>
+    His gaze locked on our son.<br>
+    His face soft with awe.</p>
+
+    <p><span class="h-comp d-comp">And still I understood:<br>
+    no matter how much I poured into this family,<br>
+    I would never be his true north.</span></p>
+
+    <p><span class="h-comp d-comp">His children would always come first.<br>
+    Not ours.<br>
+    His.</span></p>
+
+    <p><span class="h-entry">On our wedding night,<br>
+    I lay beside Brian,<br>
+    Landen's crooked tie still vivid in my mind,<br>
+    Lily's scattered petals still dotting the aisle.</span></p>
+
+    <p><span class="d-meta">I half-believed I had gone to bed a stepmother<br>
+    and would wake as something permanent —<br>
+    as if completion were crouching behind the shower curtain,<br>
+    waiting for my eyelids to close.</span></p>
+
+    <p>I wanted that feeling,<br>
+    the one that starts at your center.<br>
+    <span class="d-lex h-return">Like getting closer to your house after a long vacation,<br>
+    knowing how good everything will feel<br>
+    when you walk through the front door —<br>
+    everything tucked neatly in its place,<br>
+    waiting for you,<br>
+    expecting you.</span></p>
+
+    <p><span class="h-comp d-comp">I wanted to finally arrive.<br>
+    To feel that kind of coming home.</span></p>
+
+    <p><span class="h-comp d-comp">But morning came,<br>
+    and nothing had transformed.</span></p>
+
+    <p><span class="h-return">I was still in the margins.<br>
+    Still hoping proximity<br>
+    could become belonging.</span></p>
+
+    <p>Landen was five<br>
+    when he looked up from Goodnight Moon<br>
+    and said, "Mom?"</p>
+
+    <p>"Why'd you call me that, buddy?" I asked,<br>
+    my voice soft.</p>
+
+    <p>He shrugged. "Because you just feel like a mom."</p>
+
+    <p><span class="h-trans d-core">I thought that meant I had arrived.<br>
+    I thought love could grant citizenship.</span></p>
+
+    <p><span class="h-comp d-comp">But feeling like a mom<br>
+    and being chosen as one<br>
+    are not the same country.</span></p>
+
+    <p><span class="h-return d-meta">As a stepmother,<br>
+    I learned the invisible line<br>
+    between belonging and longing.</span></p>
+
+    <p>I held myself to impossible standards:<br>
+    <span class="d-syn">love selflessly,<br>
+    fill gaps without claiming space,<br>
+    be glue without being foundation.</span></p>
+
+    <p>When Brian said,<br>
+    "I can't keep choosing,"<br>
+    Landen frozen in the doorway,<br>
+    I wanted to scream</p>
+
+    <p><span class="h-comp d-comp">Choose me.</span></p>
+
+    <p>The words caught in my throat.<br>
+    I packed my things instead.</p>
+
+    <p><span class="d-core">Leaving behind children<br>
+    who were both mine<br>
+    and, in the same breath,<br>
+    never were.</span></p>
+
+    <p><span class="h-return">The story was always someone else's.<br>
+    I was only ever borrowing it,<br>
+    living in its white space,<br>
+    hoping proximity would become belonging.</span></p>
+
+    <p><span class="h-comp d-comp">It never did.</span></p>
+
+    <p><span class="h-res d-emo">Some families cannot be joined.<br>
+    Only orbited.</span></p>
+
+    <p><span class="h-res d-emo">That loss has lived against my body so long<br>
+    it rests there like a locket —<br>
+    small, familiar, weightless<br>
+    until it shifts<br>
+    and I feel the cold contour again.</span></p>
+  </div>
+
+  <div class="callout-grid">
+    <div class="callout" style="border-left-color:#1D9E75;">
+      <div class="callout-label" style="color:#1D9E75;">Compression Behavior — Peak Signature</div>
+      <div class="callout-text">"Not ours. His." Two words. The entire arc of the piece compressed into a single detonation. This is the most distinctive technical signature in the corpus — the long swell obliterated by the short snap.</div>
+    </div>
+    <div class="callout" style="border-left-color:#D85A30;">
+      <div class="callout-label" style="color:#D85A30;">Return Motifs</div>
+      <div class="callout-text">Doorways, margins, thresholds, orbits, belonging vs. proximity — the same conceptual attractor as the Target Chronicles, across a completely different register. This is the fingerprint.</div>
+    </div>
+    <div class="callout" style="border-left-color:#7F77DD;">
+      <div class="callout-label" style="color:#7F77DD;">Transition Logic</div>
+      <div class="callout-text">"Finally an origin, finally a mother, finally an entry point." The leap from the concrete (delivery room) to the abstract (origin, citizenship) happens in one breath, without explanation.</div>
+    </div>
+    <div class="callout" style="border-left-color:#378ADD;">
+      <div class="callout-label" style="color:#378ADD;">Emotional Resolution</div>
+      <div class="callout-text">"Some families cannot be joined. Only orbited." Open, not collapsed. The grief is held without being dramatized. Wry gravity in its most restrained form.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ESSAY 3: IRONING OUT THE DETAILS -->
+<div class="essay-section">
+  <div class="essay-meta">
+    <div class="essay-tag">Essay 03 &nbsp;/&nbsp; Personal Essay</div>
+    <div class="essay-title">Ironing Out the Details</div>
+    <div class="essay-register">Register: Conversational, comic, confessional</div>
+  </div>
+
+  <div class="essay-body">
+    <p><span class="h-entry d-core">I feel like most people hate ironing. Which makes total sense. It's like the bonus level of laundry: wash, dry, fold, put away... and then — surprise! — there's another boss battle.</span></p>
+
+    <p><span class="h-trans d-core">Quick shoutout to the original troublemakers who started this mess: Adam and Eve. Thanks, you two — we could've all been running around naked and carefree. But noooooo. Instead, you broke the one rule, blew your cover with a fig leaf, and sentenced humanity to a lifetime subscription to Laundry Unlimited.</span></p>
+
+    <p><span class="d-lex">And don't get me started on the animal names. "Giraffe"? Really, Adam? Did you sleep through phonics?</span></p>
+
+    <p>So here we are, ironing. I will do just about anything to avoid it. First, you have to find the iron — which is never where you left it. Probably got hijacked for a craft project. <span class="d-meta">Then there's the ironing board, which I haven't seen since the Nixon administration. Wrestling that thing open feels like a circus act, praying it doesn't collapse mid-sizzle like Aunt Linda after too much champagne at Rob's wedding.</span></p>
+
+    <p><span class="d-lex">And don't forget the iron itself is bougie. Distilled water only. Like my teenager: "Sink water tastes gross." Honey, I drank from a sun-baked garden hose while locked out of the house all summer, and I lived. Spare me.</span></p>
+
+    <p>So yes, I resent ironing. <span class="d-syn">It's slow, annoying, and demands patience I don't have when I still need to order groceries, door dash dinner, and binge Netflix to recover from my own to-do list.</span></p>
+
+    <p><span class="h-trans d-core">But here's the kicker: ironing is the perfect metaphor for conflict.</span> Nobody wants to do it. It's tedious, uncomfortable, and it takes forever. Yet if you skip it, you walk around looking like a crumpled mess. <span class="d-meta">Conflict with people we love is the same: a multilayered process on top of the already exhausting chores of daily life. Like folding a king-sized fitted sheet — we'd all rather avoid it, but sometimes you just have to wrestle it into shape.</span></p>
+
+    <p>Maybe one day I'll get better at both. Maybe I'll hate ironing (and conflict) a little less. <span class="d-syn">For now, I'm working on sorting my own messy inner sock basket of feelings: lights from darks, towels from sheets.</span></p>
+
+    <p>Organizing before I criticize. Taking responsibility for ironing out my stuff — and not stuffing my dirty laundry in someone else's hamper.</p>
+
+    <p>Sure, sometimes I'll find stained, mismatched things that aren't even mine. But I signed up for this life, so I wash them anyway. Maybe with time it gets easier. Maybe. <span class="d-lex">Even if it feels like it requires an industrial-size laundromat machine to process everything.</span></p>
+
+    <p><span class="h-res d-emo">Until then, life will always be a work in progress. The laundry pile will keep multiplying, conflict will keep cropping up, and yes — Adam will keep insisting the bathroom floor is a hamper.</span></p>
+
+    <p><span class="h-res d-emo">Because let's be honest — the laundry will still be there tomorrow.</span></p>
+  </div>
+
+  <div class="callout-grid">
+    <div class="callout" style="border-left-color:#C49A2A;">
+      <div class="callout-label" style="color:#C49A2A;">Core Duality — The Engine</div>
+      <div class="callout-text">The mythic-mundane collision runs the same engine as Target Chronicles — the Garden of Eden as the origin of laundry. The cosmic and the domestic in direct collision.</div>
+    </div>
+    <div class="callout" style="border-left-color:#7F77DD;">
+      <div class="callout-label" style="color:#7F77DD;">Transition Logic</div>
+      <div class="callout-text">"But here's the kicker: ironing is the perfect metaphor for conflict." The pivot from comic rant to emotional truth is made in one sentence — the same non-linear leap across all pieces.</div>
+    </div>
+    <div class="callout" style="border-left-color:#D85A30;">
+      <div class="callout-label" style="color:#D85A30;">Metaphoric Framework</div>
+      <div class="callout-text">The laundry metaphor carries the entire structural load — ironing board as life, fitted sheet as conflict, sock basket as emotional inventory. Sustained across the whole piece.</div>
+    </div>
+    <div class="callout" style="border-left-color:#378ADD;">
+      <div class="callout-label" style="color:#378ADD;">Emotional Resolution</div>
+      <div class="callout-text">"The laundry will still be there tomorrow." Wry gravity — not resolution, not despair. The same emotional terminal as every other piece. The fingerprint holds in comic register.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ESSAY 4: LOVING THE LITTLE VOLCANO -->
+<div class="essay-section">
+  <div class="essay-meta">
+    <div class="essay-tag">Essay 04 &nbsp;/&nbsp; Reflective Narrative</div>
+    <div class="essay-title">Loving the Little Volcano</div>
+    <div class="essay-register">Register: Warm, confessional, redemptive</div>
+  </div>
+
+  <div class="essay-body">
+    <p><span class="h-entry d-syn">"I don't love you!"<br>
+    "I don't want to live here!"<br>
+    "YOU'RE NOT MY MOM!"</span></p>
+
+    <p><span class="h-entry">Her small body crumpled to the floor. For the last hour, she had fought with everything she had. Now she lay limp, as if to say: I will stay here if I have to, but I will not be moved.</span></p>
+
+    <p>She pounded her fists against the bedroom carpet, her cries fading into a muddled whimper. <span class="h-trans d-core">Over and over, she whispered, "I want my mom." I sat cross-legged beside her, rubbing her back. As her little heart broke, mine cracked open with it. This was the moment when my sense of self — my fragile perception of who I really was — began to unravel.</span></p>
+
+    <p>This was my first taste of true rejection. Not implied or imagined, but raw, spoken aloud, and hurled straight at me.</p>
+
+    <p><span class="d-meta">But with time, we'd work together to put the pieces back. Slowly, healing bonds would form. And then, like learning to ride a bike, one day we'd wake up and simply be doing it — balanced, together, woven into one another, like that feeling of a puzzle piece sliding precisely into where it was always meant to be.</span></p>
+
+    <p><span class="h-comp d-comp">But this was different.</span></p>
+
+    <p><span class="d-meta">She had those spicy eyes and a temper to match. Kids with trauma often run hot, and she simmered just below boiling every single day. She was a pint-sized volcano — a tremor, rumbling, ready to erupt at any moment. The single beat of a butterfly's wings could set her off.</span></p>
+
+    <p><span class="h-trans d-core">It was her way of saying, "I'm here. See me. I'm hurting." And the truth was, she was hurting all the time. Anger had become the bodyguard for her grief.</span></p>
+
+    <p>A simple request — "Please make your bed" — could trigger a full-scale eruption. I spent that first year walking on eggshells, terrified of setting her off. One afternoon, she stormed into the kitchen furious that I was cutting orange slices. She hated orange slices. "You don't have to have any!" I snapped back — then froze. <span class="h-comp d-comp">I realized I was allowing myself to be held hostage by this tiny volcano.</span></p>
+
+    <p><span class="d-lex">She was the vinegar. I was the baking soda. Together, we both triggered something deep.</span></p>
+
+    <p>I slipped into an unhealthy rhythm, fearful of every meltdown. I skipped date nights. I dreaded vacations. <span class="d-syn">Any change in routine could ignite her. My own autonomy frayed as I burned out, frazzled, desperate for things to "just be normal again."</span></p>
+
+    <p>Through tears and late-night talks with my own mother, <span class="h-trans">I began to see the root of my struggle: her rejection of me. And yet, she was also drowning in rejection — torn from her old life, aching for her mother, mourning everything familiar.</span> <span class="h-return d-core">When I looked at her, I saw myself. Unbelievably, that abandonment from a caregiver meant that those scars on our hearts matched.</span></p>
+
+    <p>That realization shifted everything. <span class="h-trans d-core">I began searching for ways we were the same instead of obsessing over how we clashed. Both of us were fighting for love, both terrified of ultimately being proven that we were unlovable.</span></p>
+
+    <p>It was hard work — a daily, conscious practice. <span class="d-syn">I had to separate her dissatisfaction from my identity. Her feelings were hers; they didn't have to define me. I needed a shield, a buffer, something to keep me from climbing into the boxing ring with her every time she swung.</span></p>
+
+    <p><span class="h-comp d-comp">I had to become okay with her not being okay.</span></p>
+
+    <p>That didn't mean she'd stay broken forever. <span class="d-core">It meant that, for her to learn to regulate her BIG feelings, I had to give her space to feel. My role wasn't to fix her. It was to keep showing up as the calm to her chaos, to refuse to add my name to her list of rejectors.</span></p>
+
+    <p>The battle between us was never truly about one another. <span class="h-trans d-core">She wanted power and control over her world. I wanted to hold on to what little control I had left. We were both fighting from places of fear.</span></p>
+
+    <p>The question I finally asked myself was simple: <span class="h-comp d-comp">When was the last time this child got to choose anything?</span></p>
+
+    <p>I understood her rage more clearly then. <span class="d-meta">What if, instead of fighting for control, we could learn to share it? What if she and I both worked to control ourselves, creating space for a shared stake in our relationship?</span></p>
+
+    <p><span class="h-res d-emo">For now, my task is to be a bright spot on her long, volcanic journey toward healing. Rejection leaves shockwaves, but it doesn't get the final word.</span></p>
+
+    <p><span class="h-res d-emo">If this little girl can lose everything and still learn, slowly, to love again — then there's hope for me too.</span></p>
+  </div>
+
+  <div class="callout-grid">
+    <div class="callout" style="border-left-color:#C49A2A;">
+      <div class="callout-label" style="color:#C49A2A;">Entry Pattern + Core Duality</div>
+      <div class="callout-text">Opens with raw, embodied sound — three direct rejections. Immediately concrete. The mythic-mundane collision here is between the cosmic (love, rejection, belonging) and the domestic (orange slices, bedtime routines).</div>
+    </div>
+    <div class="callout" style="border-left-color:#1D9E75;">
+      <div class="callout-label" style="color:#1D9E75;">Compression Behavior</div>
+      <div class="callout-text">"But this was different." / "I had to become okay with her not being okay." The same mechanism as every other piece — the long atmospheric setup detonated by a single compressed line.</div>
+    </div>
+    <div class="callout" style="border-left-color:#D85A30;">
+      <div class="callout-label" style="color:#D85A30;">Return Motifs</div>
+      <div class="callout-text">"When I looked at her, I saw myself." The belonging vs. proximity attractor returns — but here as a mirror rather than a doorway. The conceptual anchor reappears in a new form.</div>
+    </div>
+    <div class="callout" style="border-left-color:#378ADD;">
+      <div class="callout-label" style="color:#378ADD;">Emotional Resolution</div>
+      <div class="callout-text">"If this little girl can lose everything and still learn to love again — then there's hope for me too." Not triumph. Not despair. Wry gravity — the conditional hope that refuses easy comfort.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ESSAY 5: KEYS TO ETERNITY -->
+<div class="essay-section">
+  <div class="essay-meta">
+    <div class="essay-tag">Essay 05 &nbsp;/&nbsp; Philosophical Verse</div>
+    <div class="essay-title">Keys to Eternity — Vignettes of Latent Song</div>
+    <div class="essay-register">Register: Lyric, philosophical, cosmic</div>
+  </div>
+
+  <div class="essay-body">
+    <p><span class="h-entry d-meta">In the quiet workshop of existence, a piano waits.</span><br>
+    Not as an inventor of music, but as its custodian.</p>
+
+    <p><span class="h-trans d-core">Eighty-eight keys form a finite alphabet, yet nothing here is limited. Every melody already exists — ancient laments and future anthems sharing the same silence.</span> <span class="d-lex">What humans call composition is simply activation: the moment a body opens wide enough for song to slip through.</span></p>
+
+    <p>Across centuries, the song has learned many hands. It has learned wood and wire, smoke and circuitry, breath and code.<br>
+    <span class="h-comp d-comp">It does not belong to those who play it.</span></p>
+
+    <p><span class="d-meta">Bodies hold memory the way wooden vessels hold sound. In the chambers of the heart, the universe keeps its rhythm — steady, patient, a melody unbroken.</span></p>
+
+    <p><span class="h-return d-core">What follows is the slow return from exile:<br>
+    a single song learning itself again,<br>
+    passing through human hands,<br>
+    a cosmic harp struck into awareness —<br>
+    existence, listening to itself.</span></p>
+
+    <p><strong>Bach: Precision's Echo (Leipzig, 1723)</strong></p>
+
+    <p><span class="h-entry">Chill stone. Candle breath.<br>
+    A piano waits where footsteps soften themselves,<br>
+    where even sound learns to mind its manners.</span></p>
+
+    <p><span class="d-meta">It holds fugues the way old churches hold grief —<br>
+    patiently, without commentary.<br>
+    Wood and wire. A dark throat.<br>
+    A mouth that only opens when touched.</span></p>
+
+    <p><span class="d-core">He arrives already carrying too much.<br>
+    Duty in the lumbar of his spine. Ink under his nails.<br>
+    A home that needs him. A God that asks.<br>
+    He is not looking for beauty.<br>
+    He is looking for somewhere to set the weight down.</span></p>
+
+    <p>In the moment of alignment —<br>
+    <span class="h-trans d-lex">his fingers find the keys as if feeling for a pulse.<br>
+    Not performance. Not proving.<br>
+    Just the familiar contact.</span><br>
+    Breath narrowing, then loosening —<br>
+    <span class="h-comp d-comp">a small surrender the body recognizes before the mind can name it.</span></p>
+
+    <p><span class="d-lex">Eternal architecture echoes: you may be temporary and still be true.</span></p>
+
+    <p>The instrument closes again —<br>
+    the last cadence fades into hush.<br>
+    <span class="h-res d-emo">Silence returns — not empty, not holy — just closer than before.<br>
+    The song folds itself back into the grain<br>
+    and waits the way a held breath waits:<br>
+    steady, patient.</span></p>
+
+    <p><strong>Monk: Defiance's Fire (New York, 1959)</strong></p>
+
+    <p><span class="h-entry">Smoke hangs low. Glass sweats. A chair leg sticks to the floor.<br>
+    The room doesn't ask for perfection — it asks for truth, and it's never gentle about it.</span></p>
+
+    <p><span class="d-core">He strikes the keys like naming something that refused to be named.<br>
+    Breath ragged, honest.<br>
+    The song doesn't soften — here, it burns.</span></p>
+
+    <p><span class="h-trans d-core">Angular chords bite, then bloom.<br>
+    Rhythm stumbles on purpose, then stands taller for it.<br>
+    Beauty with bruises showing.</span></p>
+
+    <p><span class="h-comp d-comp">The last chord hangs — half-finished, holy, unwilling to behave.</span></p>
+
+    <p><strong>Mei: Persistence's Glow (Tokyo, 2025)</strong></p>
+
+    <p><span class="h-entry">Now the song hums inside circuitry.<br>
+    A keyboard waits beneath LED glare — quiet, patient, half-drowned in notifications.</span></p>
+
+    <p><span class="d-core">A coder arrives with split attention:<br>
+    routines built from deadlines, sleep debt, blue light, and inherited lullabies she can't fully recall.<br>
+    Her browser tabs multiply like doubt.<br>
+    She longs for roots — not nostalgia, but something that doesn't evaporate.</span></p>
+
+    <p><span class="h-trans d-lex">In the moment of alignment —<br>
+    she silences the phone.<br>
+    The cursor blinks. The fan hums.<br>
+    Tentative fingers graze keys as if asking permission from her own body.</span></p>
+
+    <p><span class="d-meta">An etude opens like a door she forgot she built.<br>
+    Notes braid with flickers of memory: a mother's voice, a train announcement, rain against an apartment window.<br>
+    Logic and longing share the same pulse.</span></p>
+
+    <p><span class="h-comp d-comp">Persistence glows — not loud, not heroic — just refusing to disappear.</span></p>
+
+    <p><strong>Coda</strong></p>
+
+    <p><span class="h-return d-meta">In the quiet workshop of existence, a piano waits.<br>
+    It has always waited —<br>
+    not empty, not silent —<br>
+    only holding what is eternal until another body arrives, permeable enough to let it pass.</span></p>
+
+    <p><span class="h-res d-emo">Nothing concludes.<br>
+    With each passing hand —<br>
+    the song understands itself more deeply.</span></p>
+  </div>
+
+  <div class="callout-grid">
+    <div class="callout" style="border-left-color:#C49A2A;">
+      <div class="callout-label" style="color:#C49A2A;">Core Duality — Cosmic Register</div>
+      <div class="callout-text">The same mythic-mundane engine operating in the most elevated register of the corpus. "Duty in the lumbar of his spine. Ink under his nails." The cosmic (eternal song) colliding with the bodily specific.</div>
+    </div>
+    <div class="callout" style="border-left-color:#1D9E75;">
+      <div class="callout-label" style="color:#1D9E75;">Compression Behavior</div>
+      <div class="callout-text">"It does not belong to those who play it." / "Persistence glows — not loud, not heroic — just refusing to disappear." The compression signature holds even in philosophical verse. The short line does the heaviest lifting.</div>
+    </div>
+    <div class="callout" style="border-left-color:#D85A30;">
+      <div class="callout-label" style="color:#D85A30;">Return Motifs</div>
+      <div class="callout-text">"The slow return from exile." "A door she forgot she built." Orbits, returns, thresholds — the same conceptual attractor across the entire corpus, now expressed at cosmic scale.</div>
+    </div>
+    <div class="callout" style="border-left-color:#378ADD;">
+      <div class="callout-label" style="color:#378ADD;">Emotional Resolution</div>
+      <div class="callout-text">"Nothing concludes. With each passing hand — the song understands itself more deeply." The most distilled expression of wry gravity in the corpus. Open. Ongoing. Neither triumph nor loss. The fingerprint at its most essential.</div>
+    </div>
+  </div>
+</div>
+
+<!-- INVARIANCE SUMMARY -->
+<div class="summary-page">
+  <h2>Cross-Context Invariance — The Fingerprint Confirmed</h2>
+
+  <table class="invariance-table">
+    <tr>
+      <th>Signature</th>
+      <th>Target Chronicles</th>
+      <th>Doll Three</th>
+      <th>Ironing</th>
+      <th>Volcano</th>
+      <th>Keys to Eternity</th>
+    </tr>
+    <tr>
+      <td>Entry Pattern</td>
+      <td>Drifter + frontier</td>
+      <td>Fifth form of loss</td>
+      <td>Ironing as bonus level</td>
+      <td>Three rejections, aloud</td>
+      <td>Piano in workshop</td>
+    </tr>
+    <tr>
+      <td>Compression</td>
+      <td>"Not elegant. Not athletic."</td>
+      <td>"Not ours. His."</td>
+      <td>"The laundry will still be there."</td>
+      <td>"But this was different."</td>
+      <td>"It does not belong."</td>
+    </tr>
+    <tr>
+      <td>Return Motifs</td>
+      <td>Threshold, lotion as hope</td>
+      <td>Doorways, margins, orbits</td>
+      <td>Laundry as life</td>
+      <td>Mirror, matching scars</td>
+      <td>Return from exile</td>
+    </tr>
+    <tr>
+      <td>Resolution</td>
+      <td>"Damn if that lotion don't try"</td>
+      <td>"Some families only orbited"</td>
+      <td>"Laundry still there tomorrow"</td>
+      <td>"Hope for me too"</td>
+      <td>"Nothing concludes"</td>
+    </tr>
+  </table>
+
+  <div class="fingerprint-final">
+    <div class="fp-label">Narrative Fingerprint — Confirmed Across Five Contexts</div>
+    <div class="fp-statement">
+      A system that enters through the body and the mundane, escalates into mythic or philosophical scale, then folds back to land in wry, unresolved tenderness — always refusing both despair and easy comfort. The mythic-mundane engine runs in every piece. The compression detonation appears in every piece. The belonging-versus-proximity attractor underlies every piece. The resolution never fully closes. This is the fingerprint. It is not a style. It is a geometry.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
